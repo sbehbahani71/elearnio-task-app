@@ -1,29 +1,27 @@
-import { useState, useCallback, ChangeEvent, FormEvent } from 'react';
-import { useLoginValidation } from './use-login-validation';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 export const useLogin = () => {
-    const { errors, isValid } = useLoginValidation();
-    const [form, setForm] = useState({
-        username: '',
-        password: ''
+    const form = useFormik({
+        initialValues: {
+            username: '',
+            password: ''
+        },
+        validationSchema: Yup.object({
+            username: Yup.string()
+                .min(3, 'Too Short!')
+                .max(50, 'Too Long!')
+                .required('Required'),
+            password: Yup.string()
+                .min(8, 'Too Short!')
+                .required('Required'),       
+        }),
+        onSubmit: (values) => {
+            console.log(values);
+        }
     });
 
-    const updateField = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        isValid({...form, [e.target.name]: e.target.value});
-        setForm(prevForm => ({...prevForm, [e.target.name]: e.target.value}));
-    }, [form]);
-
-    const submit = (e:FormEvent<HTMLFormElement>) => {
-        const isFormValid = isValid(form);
-
-        if(isFormValid) alert('LOGIN')
-        else e.preventDefault(); 
-    };
-
     return {
-        updateField,
         form,
-        submit,
-        errors
     }
 }

@@ -15,7 +15,7 @@ import { useLogin } from '../../hooks/login/use-login';
 const theme = createTheme();
 
 export const LoginPage: FC = () => {
-  const { updateField, form, submit, errors } = useLogin();
+  const { form } = useLogin();
 
   return (
     <ThemeProvider theme={theme}>
@@ -35,31 +35,30 @@ export const LoginPage: FC = () => {
           <Typography component="h1" variant="h5">
             Login
           </Typography>'
-          <form onSubmit={e => e.preventDefault} action=""></form>
-          <Box onSubmit={submit} component="form" noValidate sx={{ mt: 1 }}>
+          <Box onSubmit={form.handleSubmit} component="form" noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              value={form.username}
-              onChange={updateField}
+              value={form.values.username}
+              onChange={form.handleChange}
               label="Username"
               name="username"
               autoFocus
-              error={errors.username.length > 0}
-              helperText={errors.username}
+              error={Boolean(form.errors.username)}
+              helperText={form.errors.username}
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              value={form.password}
-              onChange={updateField}
+              value={form.values.password}
+              onChange={form.handleChange}
               name="password"
               label="Password"
               type="password"
-              error={errors.password.length > 0}
-              helperText={errors.password}
+              error={Boolean(form.errors.password)}
+              helperText={form.errors.password}
             />
             <Button
               disableElevation
