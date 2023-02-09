@@ -8,8 +8,8 @@ export const useLogin = () => {
 
     const form = useFormik({
         initialValues: {
-            username: '',
-            password: ''
+            username: 'admin',
+            password: '1234'
         },
         validationSchema: Yup.object({
             username: Yup.string()
